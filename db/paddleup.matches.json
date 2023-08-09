@@ -1,0 +1,66 @@
+[{
+  "_id": 1,
+  "__v": 0,
+  "active": false,
+  "completed": true,
+  "date": {
+    "$date": "2023-06-03T20:22:54.389Z"
+  },
+  "matchResult": "3 - 0",
+  "player1Score": 3,
+  "player2Score": 0,
+  "players": {
+    "p1": {
+      "$oid": "647b8140bf70738bacd03201"
+    },
+    "p2": {
+      "$oid": "647b813f77e6cc6a4b7cd8c7"
+    }
+  },
+  "readableId": 1,
+  "setResult": [],
+  "timestamps": {
+    "endTime": {
+      "$date": "2023-06-03T20:19:51.592Z"
+    },
+    "startTime": {
+      "$date": "2023-06-03T20:19:51.592Z"
+    }
+  },
+  "winner": {
+    "$oid": "647b8140bf70738bacd03201"
+  }
+},
+{
+  "_id": 2,
+  "__v": 0,
+  "active": false,
+  "completed": true,
+  "date": {
+    "$date": "2023-06-03T20:23:12.657Z"
+  },
+  "matchResult": "3 - 0",
+  "player1Score": 3,
+  "player2Score": 0,
+  "players": {
+    "p1": {
+      "$oid": "647b813f77e6cc6a4b7cd8c7"
+    },
+    "p2": {
+      "$oid": "647b8140bf70738bacd03201"
+    }
+  },
+  "readableId": 2,
+  "setResult": [],
+  "timestamps": {
+    "endTime": {
+      "$date": "2023-06-03T20:19:51.592Z"
+    },
+    "startTime": {
+      "$date": "2023-06-03T20:19:51.592Z"
+    }
+  },
+  "winner": {
+    "$oid": "647b813f77e6cc6a4b7cd8c7"
+  }
+}]

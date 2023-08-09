@@ -1,0 +1,49 @@
+.profile {
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    padding: 2.5em;
+}
+
+.userpage h1,
+.userpage p,
+.userpage h2 {
+    margin: 0;
+}
+
+.userarea,
+.stat-container,
+.stat-indiv {
+    display: flex;
+    flex-direction: column;
+}
+
+.userarea {
+    align-items: center;
+    text-align: center;
+}
+
+.stats {
+    margin: 1rem;
+    padding: 1rem;
+    background-color: #e3e3e3;
+}
+
+.stat-indiv {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#line {
+    position: relative;
+    display: block;
+    top: 1em;
+    width: 12em;
+    background-color: rgb(41, 41, 41);
+    height: 0.2em;
+}
+
+#profile-text {
+    font-style: italic;
+    color: var(--primary-color-2);
+}

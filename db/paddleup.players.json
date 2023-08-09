@@ -1,0 +1,119 @@
+[{
+  "_id": {
+    "$oid": "647b7f7f02cf1c18446f95a4"
+  },
+  "name": "Admin",
+  "username": "admin",
+  "email": "admin@paddleup.no",
+  "department": "1",
+  "password": "$2a$10$JqdtpHIbhnv4H9Gs6N9EuemIq4xoy1X1j6DHjWF/3bGXnAJEJ6xTS",
+  "points": 0,
+  "bookmarkedPlayers": [],
+  "role": "admin",
+  "valid": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b813f77e6cc6a4b7cd8c7"
+  },
+  "name": "Lefty",
+  "username": "Lefty",
+  "email": "lefty@greece.no",
+  "department": "1",
+  "password": "$2a$10$0hjfEu8s6HaA7v0CUsTwxOWN0n29kHhC.g27DwTLBBb2cMi89D9eS",
+  "points": 4,
+  "bookmarkedPlayers": [],
+  "role": "player",
+  "valid": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b8140bf70738bacd03201"
+  },
+  "name": "Carlos",
+  "username": "Carlos",
+  "email": "carlos@catalonia.no",
+  "department": "1",
+  "password": "$2a$10$W9CWqVoQbpwv.yKjBlpeouJPa3QGMRSOtCCeXnWVj1Zio5H.vJZJi",
+  "bookmarkedPlayers": [],
+  "role": "player",
+  "valid": true,
+  "__v": 0,
+  "points": 4
+},
+{
+  "_id": {
+    "$oid": "647b817477e6cc6a4b7cd8d2"
+  },
+  "name": "Håvard",
+  "username": "Håvardo",
+  "email": "haavard@gmail.com",
+  "department": "1",
+  "password": "$2a$10$CFhLBB8MMGTvwTuvQwn70.vXZ4nDH8ON6wGON1NEUkzb2/R/giTmm",
+  "points": 0,
+  "bookmarkedPlayers": [],
+  "role": "player",
+  "valid": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b8175bf70738bacd0320c"
+  },
+  "name": "thor",
+  "username": "thorinj",
+  "email": "tijohans@stud.ntnu.no",
+  "department": "1",
+  "password": "$2a$10$TrRuf6b5eJztSsn5eiLu...xDb6i61zBu3aItkWjxgxf57fWVyTZu",
+  "points": 0,
+  "bookmarkedPlayers": [],
+  "role": "player",
+  "valid": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b8198bf70738bacd03217"
+  },
+  "name": "Nicolas",
+  "username": "nic",
+  "email": "nicollau@stud.ntnu.no",
+  "department": "1",
+  "password": "$2a$10$h2f20QCZncUU1uZ4ILvVEO1Y0eNy3LWcQU/CYA90eeS280YraKole",
+  "bookmarkedPlayers": [],
+  "role": "player",
+  "valid": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b81d377e6cc6a4b7cd8dd"
+  },
+  "name": "Paul",
+  "username": "Paulthon",
+  "email": "Paul@python.no",
+  "department": "1",
+  "password": "$2a$10$eddmM9vMKT5aJ4OIc8zcVuK/ZymUnfjUNW1RwuV9A7oY/Uts9AESS",
+  "points": 0,
+  "bookmarkedPlayers": [],
+  "role": "player",
+  "valid": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b84d7840e00f5d42ae402"
+  },
+  "name": "Bruno",
+  "username": "Bruno",
+  "email": "Bruno@database.no",
+  "department": "1",
+  "password": "$2a$10$m5WlRFVcLyxXRSCJ22Vo.OMR8V96ZpfBeWVyJgXDzPtXC1npbNiJG",
+  "points": 0,
+  "bookmarkedPlayers": [],
+  "role": "player",
+  "valid": false,
+  "__v": 0
+}]

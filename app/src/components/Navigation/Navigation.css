@@ -1,0 +1,12 @@
+.nav {
+    border-bottom: solid 1px black;
+    margin-bottom: 20px;
+}
+
+.nav__logo {
+    max-width: 200px;
+}
+
+.nav__logo:hover {
+    cursor: pointer;
+}

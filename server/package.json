@@ -1,0 +1,36 @@
+{
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "chalk": "^5.2.0",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^7.2.2",
+        "mongoose-to-swagger": "^1.4.0",
+        "nodemailer": "^6.9.1",
+        "nodemon": "^2.0.20",
+        "prettier": "^2.8.8",
+        "socket.io": "^4.6.1",
+        "swagger-ui-express": "^4.6.3",
+        "yaml": "^2.3.1",
+        "yamljs": "^0.3.0"
+    },
+    "name": "back-end",
+    "version": "3.0.0",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "dev": "nodemon ./server.js",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix",
+        "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "@types/jsonwebtoken": "^9.0.1",
+        "eslint": "^8.41.0",
+        "eslint-config-prettier": "^8.8.0"
+    }
+}

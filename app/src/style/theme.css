@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
+
+/* 
+    The custom theme from picocss which we are modifying here
+    https://v2.picocss.com/docs/theme-generator
+*/
+
+/* Setting root variables for the css in the app */
+:root {
+    --text-color: #011627;
+    --back-color: #f6f7f8;
+    --primary-color-0: #2ec4b6;
+    --primary-color-1: #ff3366;
+    --primary-color-2: #20a4f3;
+    --primary-color-3: #fbaf00;
+    --primary-color-4: #ffc4eb;
+    --pico-font-family: 'Atkinson Hyperlegible', sans-serif;
+    --table-color: var(--primary-color-2);
+    --table-border-color: var(--back-color);
+    --table-net-color: var(--text-color);
+    --button-color: #ff7195;
+    --button-border-color: var(--text-color);
+    --button-active-color: #b8506a;
+    --container-color: var(--primary-color-4);
+}
+
+/* Cyan color for light color scheme (Default) */
+/* Can be forced with data-theme="light" */
+[data-theme='light'],
+:root:not([data-theme='dark']) {
+    --pico-text-selection-color: rgba(5, 162, 162, 0.25);
+    --pico-primary: #239387;
+    --pico-primary-background: #2ec4b6;
+    --pico-primary-underline: #186059;
+    --pico-primary-hover: #186059;
+    --pico-primary-hover-background: #22978b;
+    --pico-primary-focus: rgba(5, 162, 162, 0.25);
+    --pico-primary-inverse: #000;
+}
+
+/* Cyan color for dark color scheme (Auto) */
+/* Automatically enabled if user has Dark mode enabled */
+@media only screen and (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --pico-text-selection-color: rgba(10, 177, 177, 0.1875);
+        --pico-primary: #0ab1b1;
+        --pico-primary-background: #047878;
+        --pico-primary-underline: rgba(10, 177, 177, 0.5);
+        --pico-primary-hover: #0ccece;
+        --pico-primary-hover-background: #058686;
+        --pico-primary-focus: rgba(10, 177, 177, 0.25);
+        --pico-primary-inverse: #fff;
+    }
+}
+
+/* Cyan color for dark color scheme (Forced) */
+/* Enabled if forced with data-theme="dark" */
+[data-theme='dark'] {
+    --pico-text-selection-color: rgba(10, 177, 177, 0.1875);
+    --pico-primary: #0ab1b1;
+    --pico-primary-background: #047878;
+    --pico-primary-underline: rgba(10, 177, 177, 0.5);
+    --pico-primary-hover: #0ccece;
+    --pico-primary-hover-background: #058686;
+    --pico-primary-focus: rgba(10, 177, 177, 0.25);
+    --pico-primary-inverse: #fff;
+}

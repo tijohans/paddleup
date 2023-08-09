@@ -1,0 +1,16 @@
+@media screen and (min-width: 600px) {
+    .section__dashboard,
+    .div__button-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .section__dashboard div {
+        min-width: 70vw;
+    }
+
+    .div__button-container {
+        align-items: center;
+    }
+}

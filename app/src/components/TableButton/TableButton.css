@@ -1,0 +1,14 @@
+.tableButton {
+    padding: 0em;
+    margin: 0.2em;
+    border: 0;
+    font-size: 0.9em;
+    max-height: 1.5em;
+    min-width: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 1em;
+    padding-right: 1em;
+}

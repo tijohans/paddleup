@@ -1,0 +1,80 @@
+[{
+  "_id": {
+    "$oid": "647b7f7f02cf1c18446f95a6"
+  },
+  "playerid": {
+    "$oid": "647b7f7f02cf1c18446f95a4"
+  },
+  "token": "gaNs2sbpbHo4CGag",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b813f77e6cc6a4b7cd8c9"
+  },
+  "playerid": {
+    "$oid": "647b813f77e6cc6a4b7cd8c7"
+  },
+  "token": "NXrUdPQGkvXHg6PJ",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b8141bf70738bacd03203"
+  },
+  "playerid": {
+    "$oid": "647b8140bf70738bacd03201"
+  },
+  "token": "xpvzPogFfBxQLyE8",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b817477e6cc6a4b7cd8d4"
+  },
+  "playerid": {
+    "$oid": "647b817477e6cc6a4b7cd8d2"
+  },
+  "token": "HXpdDF9zJ5zX5kmg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b8175bf70738bacd0320e"
+  },
+  "playerid": {
+    "$oid": "647b8175bf70738bacd0320c"
+  },
+  "token": "TMqcNVD7RFcj4AcH",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b8198bf70738bacd03219"
+  },
+  "playerid": {
+    "$oid": "647b8198bf70738bacd03217"
+  },
+  "token": "gRDRMq29YMD4xruF",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b81d377e6cc6a4b7cd8df"
+  },
+  "playerid": {
+    "$oid": "647b81d377e6cc6a4b7cd8dd"
+  },
+  "token": "qSt6SCZ1inAfHVHh",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "647b84d7840e00f5d42ae404"
+  },
+  "playerid": {
+    "$oid": "647b84d7840e00f5d42ae402"
+  },
+  "token": "BkCAORwmJgb7A4b1",
+  "__v": 0
+}]

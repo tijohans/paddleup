@@ -1,0 +1,46 @@
+.matchcard__article {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.matchcard__article__players__container {
+    padding: 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.matchcard__article__player__container__score {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-inline: 12px;
+}
+
+.matchcard__article__player {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.matchcard__article__player__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.matchcard__article__player__photo {
+    margin: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+    width: 100px;
+    height: 100px;
+}
+
+.matchcard__article__results {
+    font-weight: bold;
+    font-size: 1.5rem;
+    min-width: 3ch;
+}

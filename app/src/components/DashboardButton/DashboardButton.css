@@ -1,0 +1,40 @@
+.dashboard-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 127px;
+    margin: 1em;
+    padding: 1em;
+    border: 0;
+    border-radius: 26px;
+}
+
+.dashboard-button p,
+.dashboard-button div {
+    margin: 0;
+    padding: 0;
+    font-size: 2em;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.dashboard-button:hover {
+    cursor: not-allowed;
+}
+
+.dashboard-active:hover {
+    cursor: pointer;
+}
+
+.dashboard-active:hover {
+    filter: brightness(95%);
+}
+
+.dashboard-button p:hover {
+    text-decoration: underline;
+}
+
+#disabled:hover {
+    text-decoration: none;
+}

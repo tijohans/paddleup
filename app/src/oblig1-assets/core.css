@@ -1,0 +1,42 @@
+/* Starter layout by Geoff Graham
+https://codepen.io/geoffgraham/pen/jaqWMJ
+with several modifications*/
+
+/* ++++++ IMPORTANT ++++++ */
+/* This is only a starter code for the main layout. 
+You can modify the layout to create your own theme.
+Make sure the new layout is responsive.
+Use this file to create only the main layout and modify the fonts, headings and sizes.
+*/
+/* end IMPORTANT +++++++++ */
+
+body,
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+}
+
+main {
+    flex-direction: row;
+}
+
+body > * {
+    padding: 1%;
+}
+
+header,
+main,
+section,
+aside,
+footer {
+    width: 100%;
+}
+
+@media only screen and (max-width: 1600px) {
+    main {
+        flex-direction: column;
+    }
+}

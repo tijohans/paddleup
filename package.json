@@ -1,0 +1,18 @@
+{
+  "name": "idg2100-2023-final-exam-hortonkai",
+  "version": "1.0.0",
+  "description": "This project was created as part of the course IDG2100 Full Stack development at NTNU Gjøvik.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "init": "npm run frontend && npm run backend",
+    "frontend": "echo 'running frontend' && cd app && npm install && npm run dev &",
+    "backend": "echo 'running backend' && cd server && npm install && npm run dev &"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

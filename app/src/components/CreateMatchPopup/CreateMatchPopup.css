@@ -1,0 +1,16 @@
+.article__popup {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    border-radius: 25px;
+
+    min-width: 500px;
+    min-height: 500px;
+}
+
+.error {
+    text-decoration: underline;
+    color: #eb4869;
+}

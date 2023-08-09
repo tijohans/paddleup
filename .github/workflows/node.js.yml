@@ -1,0 +1,54 @@
+name: Format with Prettier & ESLint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 19
+
+      - name: Install dependencies (front-end)
+        run: npm install
+        working-directory: app
+
+      - name: Format files with Prettier & ESLint
+        run: npm run format
+        working-directory: app
+        
+      - name: Install dependencies (back-end)
+        run: npm install
+        working-directory: server
+
+      - name: Format files with Prettier & ESLint
+        run: npm run format
+        working-directory: server
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+
+          if [ -n "${GITHUB_HEAD_REF}" ]; then
+            BRANCH="${GITHUB_HEAD_REF}"
+          else
+            BRANCH="${GITHUB_REF}"
+          fi
+
+          git checkout "${BRANCH}"
+          git add .
+          git commit -m "Format code with Prettier & ESLint" --no-verify
+          git push origin HEAD:"${BRANCH}"

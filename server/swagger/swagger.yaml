@@ -1,0 +1,820 @@
+openapi: 3.0.0
+info:
+  title: "PaddleUP API"
+  version: "1.0.0"
+  description: "API for the PaddleUP Ping Pong Dashboard. Made as a part of IDG2100."
+tags:
+  - name: "Player"
+    description: "/api/players/"
+  - name: "Match"
+    description: "/api/matches/"
+  - name: "Validation"
+    description: "/api/emailValidation/"
+  - name: "Auth"
+    description: "/api/"
+paths:
+  # ---
+  # Auth
+  /api/login/:
+    post:
+      tags:
+        - Auth
+      description: Login
+      requestBody:
+        description: Username and password
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: JWT Token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwt:
+                    type: string
+                    description: Access token
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/register/:
+    post:
+      tags:
+        - Auth
+      description: Register a new player
+      requestBody:
+        description: Player registration info
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                username:
+                  type: string
+                department:
+                  type: number
+                password:
+                  type: string
+      responses:
+        200:
+          description: User is registered, and a verification mail is sent to the email address given
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/refresh/:
+    post:
+      tags:
+        - Auth
+      description: Check refresh token and regenerate a new one + new access token
+      security:
+        - accessToken: []
+      responses:
+        200:
+          description: JWT Token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwt:
+                    type: string
+                    description: Access token
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/logout/:
+    post:
+      tags:
+        - Auth
+      description: Log out
+      security:
+        - accessToken: []
+      responses:
+        200:
+          description: Logout successful
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  # ---
+  # Matches
+  /api/matches/:
+    get:
+      tags:
+        - Match
+      description: Returns a list of all matches
+      security:
+        - accessToken: []
+      responses:
+        200:
+          description: Array of all matches as objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Match"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags:
+        - Match
+      description: Create a new match
+      security:
+        - accessToken: []
+      requestBody:
+          description: Match data
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  p1:
+                    type: string
+                    description: Player 1 ObjectID
+                  p2:
+                    type: string
+                    description: Player 2 ObjectID
+                  winner:
+                    type: string
+                    description: Winning player ObjectID
+                  matchResult:
+                    type: string
+                    description: Match result as string
+                  player1Score:
+                    type: number
+                    description: Player 1 score
+                  player2Score:
+                    type: number
+                    description: Player 1 score
+                  setResult:
+                    type: array
+                    description: Array of set results as strings
+                    items:
+                      type: string
+                  date:
+                    type: string
+                    description: string
+                    format: date
+                  timestamps:
+                    type: object
+                    properties:
+                      startTime:
+                        type: string
+                        format: string
+                        description: Match start time
+                      endTime:
+                        type: string
+                        format: string
+                        description: Match end time
+                  duration:
+                    type: number
+                    description: Match duration
+      responses:
+        200:
+          description: Object ID of the created match
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: Object ID of the created match
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        403:
+          $ref: "#/components/responses/Forbidden"
+  /api/matches/matchnumber:
+    get:
+      tags:
+        - Match
+      description: Returns the total amount of matches played
+      responses:
+        200:
+          description: The total amount of matches played
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  matchesNumber:
+                    type: number
+                    description: Number of the matches registered
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/matches/{id}:
+    get:
+      tags:
+        - Match
+      description: Return information from one match
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Match ID
+      responses:
+        200:
+          description: Object of the match
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Match"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+    patch:
+      tags:
+        - Match
+      description: Update information for one match
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Match ID
+      responses:
+        200:
+          description: Object of the updated match
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Match"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        403:
+          $ref: "#/components/responses/Forbidden"
+    delete:
+      tags:
+        - Match
+      description: Delete one match
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Match ID
+      responses:
+        200:
+          description: "Match {id} deleted"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        403:
+          $ref: "#/components/responses/Forbidden"
+  /api/initmatch:
+    post:
+      tags:
+        - Match
+      description: Initializes a new playable match
+      security:
+        - accessToken: []
+      requestBody:
+          description: Match data
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  p1:
+                    type: string
+                    description: Player 1 ObjectID
+      responses:
+        200:
+          description: Match room id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: Room ID of the created match
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/completematch:
+    post:
+      tags:
+        - Match
+      description: Completes a playable match and stores in in the match collection
+      security:
+        - accessToken: []
+      requestBody:
+          description: Match data
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  readableId:
+                    type: string
+                    description: Match Room ID
+                  p1:
+                    type: string
+                    description: Player 1 ObjectID
+                  p2:
+                    type: string
+                    description: Player 2 ObjectID
+                  winner:
+                    type: string
+                    description: Winning player ObjectID
+                  matchResult:
+                    type: string
+                    description: Match result as string
+                  player1Score:
+                    type: number
+                    description: Player 1 score
+                  player2Score:
+                    type: number
+                    description: Player 1 score
+                  setResult:
+                    type: array
+                    description: Array of set results as strings
+                    items:
+                      type: string
+
+      responses:
+        200:
+          description: Match created
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/active/{roomid}:
+    get:
+      tags:
+        - Match
+      description: Checks if an ingame match is active
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: roomid
+          schema:
+            type: integer
+          required: true
+          description: Match Room ID
+      responses:
+        200:
+          description: Object with details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active:
+                    type: boolean
+                  found:
+                    type: boolean
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/complete/{roomid}:
+    get:
+      tags:
+        - Match
+      description: Checks if a match is marked as completed
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: roomid
+          schema:
+            type: integer
+          required: true
+          description: Match Room ID
+      responses:
+        200:
+          description: Object with details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  complete:
+                    type: boolean
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/verify/{userid}:
+    get:
+      tags:
+        - Match
+      description: Checks if a player is linked to an unactive match
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: userid
+          schema:
+            type: integer
+          required: true
+          description: Player ID
+      responses:
+        200:
+          description: Object with details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hasMatch:
+                    type: boolean
+                  roomid:
+                    type: number
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/matches/played:
+    get:
+      tags:
+        - Match
+      description: Returns all matches that the logged in player has played
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Array of match objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Match"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  # ---------------------------------------------------
+  # Player
+  /api/players/playernumber:
+    get:
+      tags:
+        - Player
+      description: Returns the total amount of players registered
+      responses:
+        200:
+          description: The total amount of players registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  playerNumber:
+                    type: number
+                    description: Number of the players registered
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/players/top5players:
+    get:
+      tags:
+        - Player
+      description: Returns the top 5 players on the site
+      responses:
+        200:
+          description: Array with the top 5 players as objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    username:
+                      type: string
+                    points:
+                      type: string
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /api/players:
+    get:
+      tags:
+        - Player
+      description: Returns a list of all players
+      security:
+        - accessToken: []
+      responses:
+        200:
+          description: Array of all players as objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Player"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/players/{id}:
+    get:
+      tags:
+        - Player
+      description: Return information from one player
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: User ID
+      responses:
+        200:
+          description: Object of the player
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Player"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+    patch:
+      tags:
+        - Player
+      description: Update information for one player. If you are logged in as an admin, you can update any player. If you are logged in as a normal user, you can only update yourself. This will be checked in the token.
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: User ID
+      responses:
+        200:
+          description: Object of the updated player
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Player"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+    delete:
+      tags:
+        - Player
+      description: Delete one player
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: User ID
+      responses:
+        200:
+          description: "Player {id} deleted"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  /api/players/generatePass/{id}:
+    post:
+      tags:
+        - Player
+      description: Generate a new password for a player
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: User ID
+      responses:
+        200:
+          description: Object of the updated player
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Player"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        403:
+          $ref: "#/components/responses/Forbidden"
+  /api/players/{id}/bookmarks:
+    get:
+      tags:
+        - Player
+      description: Get all bookmarked players from one player
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: User ID
+      responses:
+        200:
+          description: Array of bookmarked players as objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      tags:
+        - Player
+      description: Add a new bookmarked player to a player
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: User ID
+      requestBody:
+        description: ID of the player to be bookmarked
+        required: true
+        content:
+          applicaton/json:
+            schema:
+              type: object
+              required:
+                - playerIdToBookmark
+              properties:
+                playerIdToBookmark:
+                  type: string
+      responses:
+        200:
+          description: Success message + the id of the player to bookmark as string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: Success message
+                  bookmarkedPlayer:
+                    type: string
+                    description: Bookmarked player id
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+    delete:
+      tags:
+        - Player
+      description: Delete a bookmarked player from a player
+      security:
+        - accessToken: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: User ID
+      responses:
+        200:
+          description: Success message + the id of the removed bookmarked player
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: Success message
+                  bookmarkedPlayer:
+                    type: string
+                    description: Bookmarked player id
+        400:
+          $ref: "#/components/responses/BadRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+  # ---------------------------------------------------
+  # Validation
+  /api/emailValidation/{token}:
+    post:
+      tags:
+        - Validation
+      description: Validate email using token in URL
+      parameters:
+        - in: path
+          name: token
+          schema:
+            type: integer
+          required: true
+          description: Validation token
+      responses:
+        200:
+          description: User validated
+        400:
+          $ref: "#/components/responses/BadRequest"
+components:
+  responses:
+    BadRequest:
+      description: "Bad request"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: "Not authorized to access this content"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Forbidden:
+      description: "User is not authorized to access this content"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Player:
+      type: object
+    Match:
+      type: object
+    Validation:
+      type: object
+    RefreshToken:
+      type: object
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+  securitySchemes:
+    accessToken:
+      type: apiKey
+      name: token
+      in: header

@@ -1,0 +1,7 @@
+.site {
+    margin: 1em;
+}
+
+.site * {
+    width: auto;
+}
