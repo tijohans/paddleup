@@ -9,8 +9,8 @@ import { generateRefreshToken } from '../helpers/genereateRefreshToken.js'
 import { i18n } from '../helpers/i18n.js'
 import { createAccessToken } from '../helpers/creatAccessToken.js'
 import { timeValues } from '../helpers/timeValues.js'
-import { hashPassword, validatePassword } from '../helpers/password.js'
-import { checkIfUserExists } from '../helpers/user.js'
+import { hashPassword, validatePassword } from '../lib/password.js'
+import { checkIfUserExists } from '../lib/player.js'
 
 /**
     @route  /api/login
