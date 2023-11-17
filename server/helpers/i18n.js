@@ -29,5 +29,8 @@ export const i18n = {
     },
     success: {
         logout: 'You have successfullly been logged out'
+    },
+    email: {
+        subject: 'Welcome to PaddleUp!'
     }
 }

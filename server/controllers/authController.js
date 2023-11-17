@@ -4,13 +4,13 @@ import { RefreshToken } from '../models/refreshTokenSchema.js'
 import crypto from 'crypto'
 import { Validation } from '../models/validationSchema.js'
 import { randomToken } from '../helpers/RandomToken.js'
-import nodemailer from 'nodemailer'
 import { generateRefreshToken } from '../helpers/genereateRefreshToken.js'
 import { i18n } from '../helpers/i18n.js'
 import { createAccessToken } from '../helpers/creatAccessToken.js'
 import { timeValues } from '../helpers/timeValues.js'
 import { hashPassword, validatePassword } from '../lib/password.js'
 import { checkIfUserExists } from '../lib/player.js'
+import { sendValidationEmail } from '../lib/email.js'
 
 /**
     @route  /api/login
@@ -78,7 +78,7 @@ const registerPlayer = async (req, res) => {
     // let testAccount = await nodemailer.createTestAccount();
 
     let token = randomToken(16)
-    const confirmationLink = `http://localhost:5173/emailValidation/${token}`
+    const confirmationLink = process.env.EMAIL_CONFIRMATION_BASE + token
 
     let id = player._id.toString()
 
@@ -90,38 +90,10 @@ const registerPlayer = async (req, res) => {
     try {
         validation.save()
     } catch (error) {
-        console.error('saveval', error)
+        console.error('save validtion', error)
     }
 
-    // Send email to the user with the information
-    const transporter = nodemailer.createTransport({
-        service: 'hotmail',
-        //   port: 587,
-        //   secure: false,
-        auth: {
-            user: 'paddleuphorton@outlook.com',
-            pass: process.env.MAIL_PASS
-        }
-    })
-
-    const mailOptions = {
-        from: 'paddleuphorton@outlook.com',
-        to: req.body.email,
-        subject: 'Welcome to PaddleUp!',
-        html: `
-      <h1>Welcome to PaddleUp, ${req.body.name}!</h1>
-      <p>Please click the button below to confirm your email address:</p>
-      <a href="${confirmationLink}">Confirm Email</a>
-    `
-    }
-
-    transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-            console.error(err)
-        } else {
-            console.log('Email sent: ' + info.response)
-        }
-    })
+    sendValidationEmail(req.body.email, req.body.name, confirmationLink)
 }
 
 /** 
