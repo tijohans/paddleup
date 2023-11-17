@@ -9,6 +9,7 @@ import nodemailer from 'nodemailer'
 import { generateRefreshToken } from '../helpers/genereateRefreshToken.js'
 import { i18n } from '../helpers/i18n.js'
 import { createAccessToken } from '../helpers/creatAccessToken.js'
+import { timeValues } from '../helpers/timeValues.js'
 
 /**
     @route  /api/login
@@ -37,7 +38,7 @@ const loginUser = async (req, res) => {
     res.cookie('refreshToken', ranStr, {
         httpOnly: true,
         secure: true,
-        maxAge: 24 * 60 * 60 * 1000
+        maxAge: timeValues.millisecondsInADay
     })
 
     return res.status(200).json({ accessToken, username: user.username })
@@ -178,7 +179,7 @@ const refreshToken = async (req, res) => {
         res.cookie('refreshToken', ranStr, {
             httpOnly: true,
             secure: true,
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: timeValues.millisecondsInADay
         })
         return res.status(200).json({ accessToken })
     }

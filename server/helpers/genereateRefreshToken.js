@@ -1,4 +1,5 @@
 import { RefreshToken } from '../models/refreshTokenSchema'
+import { timeValues } from './timeValues'
 
 /**
  * Function for generating refresh token
@@ -13,7 +14,7 @@ export const generateRefreshToken = async (userId, randomString, role) => {
         playerid: userId,
         token: randomString,
         role: role,
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        expires: new Date(Date.now() + timeValues.millisecondsInAWeek)
     })
 
     try {
