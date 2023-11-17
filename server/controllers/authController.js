@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import { Player } from '../models/playerSchema.js'
 import { RefreshToken } from '../models/refreshTokenSchema.js'
-import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
 import { Validation } from '../models/validationSchema.js'
 import { randomToken } from '../helpers/RandomToken.js'
@@ -10,6 +9,7 @@ import { generateRefreshToken } from '../helpers/genereateRefreshToken.js'
 import { i18n } from '../helpers/i18n.js'
 import { createAccessToken } from '../helpers/creatAccessToken.js'
 import { timeValues } from '../helpers/timeValues.js'
+import { hashPassword, validatePassword } from '../helpers/password.js'
 
 /**
     @route  /api/login
@@ -22,20 +22,19 @@ const loginUser = async (req, res) => {
 
     if (!user) return res.status(400).json({ error: i18n.errors.wrongCredentials })
 
-    const correctPassword = await bcrypt.compare(password, user.password)
+    const isCorrectPassword = validatePassword(password, user.password)
 
-    if (!correctPassword) return res.status(400).json({ error: i18n.errors.wrongCredentials })
+    if (!isCorrectPassword) return res.status(400).json({ error: i18n.errors.wrongCredentials })
     if (!user.valid) return res.status(400).json({ error: i18n.errors.notVerified })
 
     await RefreshToken.deleteMany({ playerid: user.id })
 
-    const ranStr = crypto.randomBytes(64).toString('hex')
+    const randomString = crypto.randomBytes(64).toString('hex')
 
-    await generateRefreshToken(user.id, ranStr, user.role)
+    await generateRefreshToken(user.id, randomString, user.role)
     const accessToken = createAccessToken(user.id, user.role)
 
-    // Return the refreshToken as a httpOnly cookie, and the accessToken in JSON format
-    res.cookie('refreshToken', ranStr, {
+    res.cookie('refreshToken', randomString, {
         httpOnly: true,
         secure: true,
         maxAge: timeValues.millisecondsInADay
@@ -49,17 +48,11 @@ const loginUser = async (req, res) => {
     @desc   Register new player
 */
 const registerPlayer = async (req, res) => {
-    // First, check if the email already exists in the database, if so - throw an error
     const checkEmail = await Player.findOne({ email: req.body.email })
+
     if (checkEmail) return res.status(409).json({ err: i18n.errors.emailAlreadyRegistered })
 
-    // Hash and salt the password using bcrypt
-    const password = await bcrypt
-        .genSalt(10)
-        .then((salt) => {
-            return bcrypt.hash(req.body.password, salt)
-        })
-        .catch((err) => console.error(err.message))
+    const password = hashPassword(req.body.password)
 
     // Retrieve the information needed for player creation in the body
     // Create a new MongoDB schema object with this information
