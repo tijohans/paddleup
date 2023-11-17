@@ -2,13 +2,13 @@ import 'dotenv/config'
 import { Player } from '../models/playerSchema.js'
 import { RefreshToken } from '../models/refreshTokenSchema.js'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 import { Validation } from '../models/validationSchema.js'
 import { randomToken } from '../helpers/RandomToken.js'
 import nodemailer from 'nodemailer'
 import { generateRefreshToken } from '../helpers/genereateRefreshToken.js'
 import { i18n } from '../helpers/i18n.js'
+import { createAccessToken } from '../helpers/creatAccessToken.js'
 
 /**
     @route  /api/login
@@ -31,11 +31,7 @@ const loginUser = async (req, res) => {
     const ranStr = crypto.randomBytes(64).toString('hex')
 
     await generateRefreshToken(user.id, ranStr, user.role)
-
-    // Create the access token, and set it to expire in 15 minutes
-    const accessToken =
-        'Bearer ' +
-        jwt.sign({ sub: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '15m' })
+    const accessToken = createAccessToken(user.id, user.role)
 
     // Return the refreshToken as a httpOnly cookie, and the accessToken in JSON format
     res.cookie('refreshToken', ranStr, {
@@ -43,6 +39,7 @@ const loginUser = async (req, res) => {
         secure: true,
         maxAge: 24 * 60 * 60 * 1000
     })
+
     return res.status(200).json({ accessToken, username: user.username })
 }
 
@@ -175,10 +172,7 @@ const refreshToken = async (req, res) => {
 
         await generateRefreshToken(playerid, ranStr, role)
 
-        // Generate a new access token for the user
-        const accessToken =
-            'Bearer ' +
-            jwt.sign({ sub: playerid, role: role }, process.env.JWT_SECRET, { expiresIn: '15m' })
+        const accessToken = createAccessToken(playerid, role)
 
         // Return the refreshToken as a httpOnly cookie, and the accessToken in JSON format
         res.cookie('refreshToken', ranStr, {
