@@ -7,50 +7,32 @@ import crypto from 'crypto'
 import { Validation } from '../models/validationSchema.js'
 import { randomToken } from '../helpers/RandomToken.js'
 import nodemailer from 'nodemailer'
+import { generateRefreshToken } from '../helpers/genereateRefreshToken.js'
 
 /**
     @route  /api/login
     @desc   Route for logging in user
 */
 const loginUser = async (req, res) => {
-    // Find the email and password from the body in the request
     const { email, password } = req.body
 
-    // Find user in the database based on the email
     const user = await Player.findOne({ email: email }).populate('username')
 
     if (!user)
         // If user does not exist, return an error
         return res.status(400).json({ error: 'Password or email incorrect' })
 
-    // Compare the password gotten with the hashed password stored
     const correctPassword = await bcrypt.compare(password, user.password)
 
-    // If the password does not match, return an error
-    if (!user || !correctPassword)
-        return res.status(400).json({ error: 'Password or email incorrect' })
+    if (!correctPassword) return res.status(400).json({ error: 'Password or email incorrect' })
 
-    // (We use the same errors for the messages to not let the user know if an user exists or not, to prevent info to malicious attackers)
-
-    // If the user is not validated, return an error
     if (!user.valid) return res.status(400).json({ error: 'Email not verified' })
 
-    // Delete all old refresh tokens in the DB with the userid, to clear any old tokens.
     await RefreshToken.deleteMany({ playerid: user.id })
 
-    // Genereate a random string for the refresh token using crypto
     const ranStr = crypto.randomBytes(64).toString('hex')
 
-    // Create a refresh token with the userid, a random string (token) + an expiration date
-    const refreshToken = new RefreshToken({
-        playerid: user.id,
-        token: ranStr,
-        role: user.role,
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-    })
-
-    // Save the newly created refresh token to the database
-    await refreshToken.save()
+    await generateRefreshToken(user.id, ranStr, user.role)
 
     // Create the access token, and set it to expire in 15 minutes
     const accessToken =
@@ -181,7 +163,7 @@ const refreshToken = async (req, res) => {
         return res.status(400).json({ message: 'Invalid request - nothing found' })
     }
 
-    if (req.cookies?.refreshToken) {
+    if (!req.cookies?.refreshToken) {
         // If we can find the refresh token cookie,
         // try to match it to a refreshtoken in the database
         const token = req.cookies?.refreshToken
@@ -203,16 +185,7 @@ const refreshToken = async (req, res) => {
         // Generate a new random string for the new refresh token to be generated
         const ranStr = crypto.randomBytes(64).toString('hex')
 
-        // Create a new refresh token to replace the old one
-        const newRefreshToken = new RefreshToken({
-            playerid: playerid,
-            token: ranStr,
-            role: role,
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-        })
-
-        // Save the new refresh token in the database
-        await newRefreshToken.save()
+        await generateRefreshToken(playerid, ranStr, role)
 
         // Generate a new access token for the user
         const accessToken =
