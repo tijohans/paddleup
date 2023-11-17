@@ -10,6 +10,7 @@ import { i18n } from '../helpers/i18n.js'
 import { createAccessToken } from '../helpers/creatAccessToken.js'
 import { timeValues } from '../helpers/timeValues.js'
 import { hashPassword, validatePassword } from '../helpers/password.js'
+import { checkIfUserExists } from '../helpers/user.js'
 
 /**
     @route  /api/login
@@ -48,14 +49,11 @@ const loginUser = async (req, res) => {
     @desc   Register new player
 */
 const registerPlayer = async (req, res) => {
-    const checkEmail = await Player.findOne({ email: req.body.email })
-
-    if (checkEmail) return res.status(409).json({ err: i18n.errors.emailAlreadyRegistered })
+    if (checkIfUserExists(req.body.email))
+        return res.status(409).json({ err: i18n.errors.emailAlreadyRegistered })
 
     const password = hashPassword(req.body.password)
 
-    // Retrieve the information needed for player creation in the body
-    // Create a new MongoDB schema object with this information
     const player = new Player({
         name: req.body.name,
         username: req.body.username,
@@ -65,7 +63,6 @@ const registerPlayer = async (req, res) => {
         role: 'player'
     })
 
-    // Optional inputs
     if (req.body.birthdate) player.birthdate = req.body.birthdate
     if (req.body.points) player.points = req.body.points
     if (req.body.valid) player.valid = req.body.valid
@@ -75,7 +72,7 @@ const registerPlayer = async (req, res) => {
         const savedPlayer = await player.save()
         res.send(savedPlayer)
     } catch (err) {
-        console.errpr('saveplayer', err)
+        console.error('saveplayer', err)
     }
 
     // let testAccount = await nodemailer.createTestAccount();
