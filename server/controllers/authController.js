@@ -8,7 +8,7 @@ import { Validation } from '../models/validationSchema.js'
 import { randomToken } from '../helpers/RandomToken.js'
 import nodemailer from 'nodemailer'
 
-/* 
+/**
     @route  /api/login
     @desc   Route for logging in user
 */
@@ -66,7 +66,7 @@ const loginUser = async (req, res) => {
     return res.status(200).json({ accessToken, username: user.username })
 }
 
-/* 
+/**
     @route  POST /api/register
     @desc   Register new player
 */
@@ -166,7 +166,7 @@ const registerPlayer = async (req, res) => {
     // res.status(200).json(savedPlayer);
 }
 
-/* 
+/** 
     @route  /api/refresh
     @desc   Route for refreshing the tokens
 */
@@ -229,7 +229,7 @@ const refreshToken = async (req, res) => {
     }
 }
 
-/* 
+/** 
     @route  /api/logout
     @desc   Route for logging out
 */

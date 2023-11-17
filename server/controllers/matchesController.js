@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import calculatePointUser from '../helpers/CalculatePoints.js'
 
-/**
+/***
     @route  GET /api/matches
     @desc   get all matches
 */
@@ -33,7 +33,7 @@ const getMatchesNumber = async (req, res) => {
     }
 }
 
-/**
+/***
     @route  POST /api/matches
     @desc   Create a new match
 */
@@ -74,7 +74,7 @@ const createMatch = async (req, res) => {
     }
 }
 
-/**
+/***
     @route  GET /api/matches/:id
     @desc   Get a single match
 */
@@ -121,7 +121,7 @@ const updateMatch = async (req, res) => {
     }
 }
 
-/** 
+/*** 
     @route  DELETE /api/matches/:id
     @desc   delete a match
 */
@@ -146,7 +146,7 @@ const deleteMatch = async (req, res) => {
     }
 }
 
-/**
+/***
     @route POST /api/matches/initmatch
     @description  Route for initializing a match
 */
@@ -173,7 +173,7 @@ const initMatch = async (req, res) => {
     }
 }
 
-/**
+/***
  * @route POST /api/matches/completematch
  * @description route for completing a match once it is finishsed
  */
@@ -221,7 +221,7 @@ const completeMatch = async (req, res) => {
     }
 }
 
-/**
+/***
  * @description Route for checking if a match exists by passing the roomnumber in request
  * @route POST /api/matches/checkIfMatchExists
  * @param {Request} req
@@ -269,7 +269,7 @@ const checkMatchActive = async (req, res) => {
     return res.status(200).json({ active: true, found: true })
 }
 
-/**
+/***
  * @description Route for verifying that a user has not already got an active match with their id connected to
  * @route GET /api/matches/verify/:userid
  * @param {Request} req
@@ -294,7 +294,7 @@ const checkMatchUser = async (req, res) => {
     if (match.active) return res.status(200).json({ hasMatch: true, roomid: match.readableId })
 }
 
-/**
+/***
  * @description Route for checking if a match has already been completed
  * @param {Request} req
  * @param {Response} res
@@ -317,7 +317,7 @@ const checkMatchComplete = async (req, res) => {
     return res.status(200).json({ complete: true })
 }
 
-/**
+/***
  *
  * @param {Request} req
  * @param {Response} res

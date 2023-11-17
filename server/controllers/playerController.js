@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import { randomToken } from '../helpers/RandomToken.js'
 import nodemailer from 'nodemailer'
 
-/* 
+/** 
     @route  GET /api/players
     @desc   get all players
 */
@@ -20,7 +20,7 @@ const getPlayers = async (req, res) => {
     }
 }
 
-/*
+/**
   @route  /api/player/playernumber
   @desc  Route for getting the number of registered users
 */
@@ -50,7 +50,7 @@ const getTop5Players = async (req, res) => {
     }
 }
 
-/* 
+/** 
     @route  GET /api/players/:id
     @desc   get a single player
 */
@@ -63,7 +63,7 @@ const getPlayer = async (req, res) => {
     }
 }
 
-/* 
+/** 
     @route  PATCH /api/players/:id
     @desc   update a player
 */
@@ -150,7 +150,7 @@ const generatePasswordPlayer = async (req, res) => {
     }
 }
 
-/* 
+/** 
     @route  DELETE /api/players/:id
     @route  delete a player
 */
@@ -163,7 +163,7 @@ const deletePlayer = async (req, res) => {
     }
 }
 
-/*  
+/**  
     @route  GET /api/players/:id/bookmarks
     @desc   Get all bookmarked players for a specific player
 */
@@ -188,7 +188,7 @@ const getBookmarks = async (req, res) => {
     }
 }
 
-/* 
+/** 
     * Going outside the REST paradigm here to keep the url's concise, 
     * since we are manipulating what should probably be its own schema
     
@@ -218,7 +218,7 @@ const addBookmark = async (req, res) => {
     }
 }
 
-/* 
+/** 
     @route  POST /api/players/:id/removeBookmark
     @desc   Remove a bookmark from a player based on the id of the user we which to unbookmark
 */
