@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
-import { Player } from '../models/playerSchema.js'
 
 const verifyToken = (req, res, next) => {
     const errorMessage = { error: 'Not authorized to access this content' }
@@ -23,17 +22,6 @@ const verifyToken = (req, res, next) => {
     }
 }
 
-const verifyAdminDB = async (id) => {
-    try {
-        const player = await Player.findById(id)
-        if (player.role === 'admin') {
-            console.log('verifyAdminDB check passed')
-            return true
-        }
-    } catch {
-        return false
-    }
-}
 const verifyAdmin = (req, res, next) => {
     const errorMessage = { error: 'User is not authorized to access this content' }
 

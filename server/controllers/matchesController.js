@@ -1,10 +1,8 @@
 import { Match } from '../models/matchesSchema.js'
 import { getNextReadableDocumentId } from './counterController.js'
 import { InitMatch } from '../models/initMatchSchema.js'
-import updatePoints from '../helpers/updatePoints.js'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
-import chalk, { chalkStderr } from 'chalk'
 import calculatePointUser from '../helpers/CalculatePoints.js'
 
 /**
