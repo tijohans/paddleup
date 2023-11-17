@@ -11,6 +11,7 @@ import { timeValues } from '../helpers/timeValues.js'
 import { hashPassword, validatePassword } from '../lib/password.js'
 import { checkIfUserExists } from '../lib/player.js'
 import { sendValidationEmail } from '../lib/email.js'
+import { validateRefreshToken } from '../helpers/validateRefreshToken.js'
 
 /**
     @route  /api/login
@@ -67,7 +68,6 @@ const registerPlayer = async (req, res) => {
     if (req.body.points) player.points = req.body.points
     if (req.body.valid) player.valid = req.body.valid
 
-    // Save the information in the database
     try {
         const savedPlayer = await player.save()
         res.send(savedPlayer)
@@ -104,47 +104,32 @@ const refreshToken = async (req, res) => {
     // Inspiration and some source come from this tutorial:
     // https://jasonwatmore.com/post/2020/06/17/nodejs-mongodb-api-jwt-authentication-with-refresh-tokens
 
-    // Check if a cookie named refreshToken exists
-
     if (!req.cookies?.refreshToken) {
-        // If not, return error
         return res.status(400).json({ message: i18n.errors.invalidRequest.notFound })
     }
 
-    if (!req.cookies?.refreshToken) {
-        // If we can find the refresh token cookie,
-        // try to match it to a refreshtoken in the database
-        const token = req.cookies?.refreshToken
-        const refreshToken = await RefreshToken.findOne({ token })
-        // If we can't find the refresh token, error
-        if (!refreshToken)
-            return res.status(400).json({ message: i18n.errors.invalidRequest.noToken })
+    const token = req.cookies?.refreshToken
+    const refreshToken = await RefreshToken.findOne({ token })
 
-        // If the refresh token is past it's expiration date, error
-        if (refreshToken.expires < new Date(Date.now()))
-            return res.status(400).json({ message: i18n.errors.invalidRequest.expiredToken })
+    if (!validateRefreshToken(refreshToken))
+        return res.status(400).json({ message: i18n.errors.invalidRequest.expiredToken })
 
-        // Get the playerid via the refresh token found in the database
-        const { playerid, role } = refreshToken
+    const { playerid, role } = refreshToken
 
-        // Delete the old refresh token
-        await RefreshToken.findByIdAndDelete(refreshToken._id)
+    await RefreshToken.findByIdAndDelete(refreshToken._id)
 
-        // Generate a new random string for the new refresh token to be generated
-        const ranStr = crypto.randomBytes(64).toString('hex')
+    const ranStr = crypto.randomBytes(64).toString('hex')
+    await generateRefreshToken(playerid, ranStr, role)
 
-        await generateRefreshToken(playerid, ranStr, role)
+    const accessToken = createAccessToken(playerid, role)
 
-        const accessToken = createAccessToken(playerid, role)
-
-        // Return the refreshToken as a httpOnly cookie, and the accessToken in JSON format
-        res.cookie('refreshToken', ranStr, {
-            httpOnly: true,
-            secure: true,
-            maxAge: timeValues.millisecondsInADay
-        })
-        return res.status(200).json({ accessToken })
-    }
+    // Return the refreshToken as a httpOnly cookie, and the accessToken in JSON format
+    res.cookie('refreshToken', ranStr, {
+        httpOnly: true,
+        secure: true,
+        maxAge: timeValues.millisecondsInADay
+    })
+    return res.status(200).json({ accessToken })
 }
 
 /** 
