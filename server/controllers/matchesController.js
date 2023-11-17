@@ -4,6 +4,7 @@ import { InitMatch } from '../models/initMatchSchema.js'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import calculatePointUser from '../helpers/CalculatePoints.js'
+import { i18n } from '../helpers/i18n.js'
 
 /***
     @route  GET /api/matches
@@ -95,7 +96,7 @@ const getMatch = async (req, res) => {
 const updateMatch = async (req, res) => {
     try {
         const match = await Match.findById(req.params.id).sort({ date: -1 })
-        if (!match) return res.status(404).json({ message: 'Match not found' })
+        if (!match) return res.status(404).json({ message: i18n.errors.notFound.match })
 
         // Update match information
         match.players.p1 = req.body.p1
@@ -131,7 +132,7 @@ const deleteMatch = async (req, res) => {
         // Finding the match to delete
         const playedMatch = await Match.findById(id)
 
-        if (!playedMatch) return res.status(404).json({ message: 'Match not found' })
+        if (!playedMatch) return res.status(404).json({ message: i18n.errors.notFound.match })
 
         // Deleting the match
         const deletedMatch = await Match.findByIdAndDelete(id)
@@ -231,17 +232,18 @@ const completeMatch = async (req, res) => {
 const checkIfMatchExist = async (req, res) => {
     const roomId = req.body.roomId
 
-    if (!roomId || !Number(roomId)) return res.status(400).json({ error: 'Not a valid room id' })
+    if (!roomId || !Number(roomId))
+        return res.status(400).json({ error: i18n.errors.room.invalidId })
 
     const matchWithId = await Match.find({ readableId: roomId }).select()
 
     console.log(matchWithId)
 
     if (matchWithId.length === 0)
-        return res.status(400).json({ error: 'No match exists with that id' })
+        return res.status(400).json({ error: i18n.errors.room.matchDoesNotExist })
 
     if (matchWithId.active !== true && matchWithId.completed !== false)
-        return res.status(500).json({ error: 'Not able to join match' })
+        return res.status(500).json({ error: i18n.errors.room.noJoin })
 
     // Returning a boolean value
     return res.status(200).json({ isActive: Boolean(matchWithId) })
@@ -250,19 +252,22 @@ const checkIfMatchExist = async (req, res) => {
 const checkMatchActive = async (req, res) => {
     const roomid = req.params.roomid
 
-    if (!roomid || !Number(roomid)) return res.status(400).json({ error: 'Not a valid room id' })
+    if (!roomid || !Number(roomid))
+        return res.status(400).json({ error: i18n.errors.room.invalidId })
 
     const match = await InitMatch.findOne({ readableId: roomid })
 
     if (!match)
         return res.status(400).json({
-            error: 'No match ingame exists with that id',
+            error: i18n.errors.room.matchDoesNotExist,
             active: false,
             found: false
         })
 
     if (!match.active) {
-        return res.status(400).json({ error: 'Match is not active', active: false, found: true })
+        return res
+            .status(400)
+            .json({ error: i18n.errors.room.inactive, active: false, found: true })
     }
 
     // Returning a boolean value
@@ -279,17 +284,14 @@ const checkMatchActive = async (req, res) => {
 const checkMatchUser = async (req, res) => {
     const userid = req.params.userid
 
-    if (!userid) return res.status(400).json({ error: 'No player id provided' })
+    if (!userid) return res.status(400).json({ error: i18n.errors.invalidRequest.noId })
 
     const match = await InitMatch.findOne({ p1: userid, active: true })
 
-    if (!match)
-        return res.status(200).json({ hasMatch: false, error: 'No matches with that player' })
+    if (!match) return res.status(200).json({ hasMatch: false, error: i18n.errors.match.noPlayer })
 
     if (!match.active)
-        return res
-            .status(200)
-            .json({ hasMatch: false, error: 'No active matches with that player' })
+        return res.status(200).json({ hasMatch: false, error: i18n.errors.match.noActivePlayer })
 
     if (match.active) return res.status(200).json({ hasMatch: true, roomid: match.readableId })
 }
@@ -303,16 +305,17 @@ const checkMatchUser = async (req, res) => {
 const checkMatchComplete = async (req, res) => {
     const roomid = req.params.roomid
 
-    if (!roomid || !Number(roomid)) return res.status(400).json({ error: 'Not a valid room id' })
+    if (!roomid || !Number(roomid))
+        return res.status(400).json({ error: i18n.errors.room.invalidId })
 
     const match = await Match.findOne({ readableId: roomid })
 
     console.log(match)
 
-    if (!match) return res.status(400).json({ error: 'Match not found.', complete: false })
+    if (!match) return res.status(400).json({ error: i18n.errors.notFound.match, complete: false })
 
     if (!match.completed)
-        return res.status(400).json({ error: 'Match not set as complete.', complete: false })
+        return res.status(400).json({ error: i18n.errors.match.notComplete, complete: false })
 
     return res.status(200).json({ complete: true })
 }

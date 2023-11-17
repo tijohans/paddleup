@@ -8,6 +8,7 @@ import { Validation } from '../models/validationSchema.js'
 import { randomToken } from '../helpers/RandomToken.js'
 import nodemailer from 'nodemailer'
 import { generateRefreshToken } from '../helpers/genereateRefreshToken.js'
+import { i18n } from '../helpers/i18n.js'
 
 /**
     @route  /api/login
@@ -18,15 +19,12 @@ const loginUser = async (req, res) => {
 
     const user = await Player.findOne({ email: email }).populate('username')
 
-    if (!user)
-        // If user does not exist, return an error
-        return res.status(400).json({ error: 'Password or email incorrect' })
+    if (!user) return res.status(400).json({ error: i18n.errors.wrongCredentials })
 
     const correctPassword = await bcrypt.compare(password, user.password)
 
-    if (!correctPassword) return res.status(400).json({ error: 'Password or email incorrect' })
-
-    if (!user.valid) return res.status(400).json({ error: 'Email not verified' })
+    if (!correctPassword) return res.status(400).json({ error: i18n.errors.wrongCredentials })
+    if (!user.valid) return res.status(400).json({ error: i18n.errors.notVerified })
 
     await RefreshToken.deleteMany({ playerid: user.id })
 
@@ -55,7 +53,7 @@ const loginUser = async (req, res) => {
 const registerPlayer = async (req, res) => {
     // First, check if the email already exists in the database, if so - throw an error
     const checkEmail = await Player.findOne({ email: req.body.email })
-    if (checkEmail) return res.status(409).json({ err: 'Email already registered' })
+    if (checkEmail) return res.status(409).json({ err: i18n.errors.emailAlreadyRegistered })
 
     // Hash and salt the password using bcrypt
     const password = await bcrypt
@@ -136,16 +134,6 @@ const registerPlayer = async (req, res) => {
             console.log('Email sent: ' + info.response)
         }
     })
-
-    // const savedValidation = await Validation.save();
-
-    // Combine savedPlayer and savedValidation in a response object
-    // const responseData = {
-    //   savedPlayer,
-    //   savedValidation,
-    // };
-
-    // res.status(200).json(savedPlayer);
 }
 
 /** 
@@ -160,7 +148,7 @@ const refreshToken = async (req, res) => {
 
     if (!req.cookies?.refreshToken) {
         // If not, return error
-        return res.status(400).json({ message: 'Invalid request - nothing found' })
+        return res.status(400).json({ message: i18n.errors.invalidRequest.notFound })
     }
 
     if (!req.cookies?.refreshToken) {
@@ -170,11 +158,11 @@ const refreshToken = async (req, res) => {
         const refreshToken = await RefreshToken.findOne({ token })
         // If we can't find the refresh token, error
         if (!refreshToken)
-            return res.status(400).json({ message: 'Invalid request - nothing toekn' })
+            return res.status(400).json({ message: i18n.errors.invalidRequest.noToken })
 
         // If the refresh token is past it's expiration date, error
         if (refreshToken.expires < new Date(Date.now()))
-            return res.status(400).json({ message: 'Invalid request - no token expired is' })
+            return res.status(400).json({ message: i18n.errors.invalidRequest.expiredToken })
 
         // Get the playerid via the refresh token found in the database
         const { playerid, role } = refreshToken
@@ -214,14 +202,14 @@ const logoutUser = async (req, res) => {
         const refreshToken = await RefreshToken.findOne({ token })
         // If we can't find the refresh token, error
         if (!refreshToken)
-            return res.status(400).json({ message: 'Invalid request (already logged out?)' })
+            return res.status(400).json({ message: i18n.errors.invalidRequest.badRequest })
 
         // Delete the old refresh token
         await RefreshToken.findByIdAndDelete(refreshToken._id)
 
         // Clear the HTTPOnly refreshToken for log out.
         res.clearCookie('refreshToken')
-        return res.status(200).json({ message: 'Successful logout' })
+        return res.status(200).json({ message: i18n.success.logout })
     }
 }
 
