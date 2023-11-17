@@ -1,14 +1,52 @@
+# For clean code
+
+**The code for clean_code is not on the main branch, but on the "clean_code" branch**
+
+For the clean code module I only want to showcase the backend part, which is located in the server folder. My main focus was on cleaning up the controllers, which is where most of logic behind the endpoints is located.
+
+## prerequisite
+
+For this server to run properly you need to have node installed on your maschine.
+
+## Running the server locally
+
+To run the server locally run the command below:
+
+```
+cd server && npm run dev
+```
+
+This commmand will put you inside the server directory, and then start the devlopment server using node.
+
+## Running tests and linting
+
+For test I use jest, and for linting I use eslint.
+
+To run linting run the command:
+
+```
+npm run lint
+```
+
+To run testing run the command:
+
+```
+npm run test
+```
+
+# Original readme:
+
 # PaddleUp! Table Tennis Dashboard
 
-This project was created as part of the course IDG2100 Full Stack development at NTNU Gjøvik. 
+This project was created as part of the course IDG2100 Full Stack development at NTNU Gjøvik.
 
 ## Getting Started
 
-To get started with this project all you need to do is run `npm run init` in the root folder of the project. This script is designed to setup and run both the front-end and the back-end of the project in one simple command. 
+To get started with this project all you need to do is run `npm run init` in the root folder of the project. This script is designed to setup and run both the front-end and the back-end of the project in one simple command.
 
-If you would like to set up the database locally, we have included the dummy data for the database in the `db` folder. Make sure you modify the `.env` file accordingly. 
+If you would like to set up the database locally, we have included the dummy data for the database in the `db` folder. Make sure you modify the `.env` file accordingly.
 
-The database is already set up and running on MongoDB atlas, and the `.env` file is modified and set up to connect to this automatically once the back-end is running. The `.env` file is uploaded to the submission on Blackboard. 
+The database is already set up and running on MongoDB atlas, and the `.env` file is modified and set up to connect to this automatically once the back-end is running. The `.env` file is uploaded to the submission on Blackboard.
 
 #### Prerequisites
 
@@ -19,7 +57,7 @@ The script / application will use node to install all the dependencies of the pr
 
 #### Steps
 
-Assuming you are in the root folder of the project and running a unix based operating system (MacOS, Linux), run the following commands: 
+Assuming you are in the root folder of the project and running a unix based operating system (MacOS, Linux), run the following commands:
 
 1. `npm run init`
 
@@ -31,7 +69,7 @@ This command will open the storybook for some of the components
 
 #### Troubleshooting
 
-If the scripts won't stop running after closing the terminal you may need to run the command: `killall node`. This command will kill all instances of node running locally on your machine. 
+If the scripts won't stop running after closing the terminal you may need to run the command: `killall node`. This command will kill all instances of node running locally on your machine.
 
 If you for some reason cannot close all instances of node, you can find the PID number of the service running on the ports, which in this case most likely be between `5173` and `5179` for the front end, and will be `4005` for the backend. Then you can run the command `lsof -i :<portnumber>` and then run `kill <PID number>`
 
@@ -43,7 +81,7 @@ https://react-hook-form.com/get-started#Quickstart
 Password checking in react-hook-form:
 https://stackoverflow.com/questions/70480928/how-to-validate-password-and-confirm-password-in-react-hook-form-is-there-any-v
 
-For authenticating with JWT: 
+For authenticating with JWT:
 https://jasonwatmore.com/post/2020/06/17/nodejs-mongodb-api-jwt-authentication-with-refresh-tokens
 
 Table tennis component is taken from oblig 1 by Nicolas Laukemann:
