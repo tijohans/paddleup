@@ -6,7 +6,7 @@ Made by:
 
 - Thor Ivar Nirisen Johansen
 - Nicolas Laukemann
-- Håvard Larsen
+- Håvard Aleksander Larsen
 
 ## Getting Started
 
