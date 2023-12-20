@@ -4,9 +4,9 @@ This project was created as part of the course IDG2100 Full Stack development at
 
 Made by:
 
-Thor Ivar Nirisen Johansen
-Nicolas Laukemann
-Håvard Larsen
+- Thor Ivar Nirisen Johansen
+- Nicolas Laukemann
+- Håvard Larsen
 
 ## Getting Started
 
